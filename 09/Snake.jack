@@ -1,0 +1,47 @@
+class Snake {
+    field int headx;
+    field int heady;
+    field Snake remaining;
+
+    constructor Snake new (int hx, int hy, Snake rm){
+        let headx = hx;
+        let heady = hy;
+        do Screen.setColor(true);
+        do Screen.drawRectangle(headx,heady,headx+10,heady+10);
+        let remaining = rm;
+        return this;
+    }
+
+    method Snake getrem(){
+        return remaining;
+    }
+
+    method int getheady(){
+        return heady;
+    }
+    method int getheadx(){
+        return headx;
+    }
+
+    method void setrem(Snake rem){
+        let remaining = rem;
+        return;
+    }
+    
+    method Snake removecurr() {
+        var int next;
+        do Screen.setColor(false);
+        do Screen.drawRectangle(headx,heady,headx+10,heady+10);
+        let next = remaining;
+        return next;
+    }
+
+    method void dispose() {
+        if (~(remaining = null)) {
+            do remaining.dispose();
+        }
+        // Uses an OS routine to recycle this object.
+        do Memory.deAlloc(this);
+        return;
+    }
+}

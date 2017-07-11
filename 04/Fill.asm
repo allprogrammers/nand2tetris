@@ -1,0 +1,63 @@
+(LOOP)
+@SCREEN
+D=A
+@R0
+M=D
+@R3
+M=0
+@KBD
+D=M
+@CLEAR
+D;JEQ
+(DRAW)
+	@32767
+	D=A
+	@R0
+	A=M
+	M=D
+	M=M+D
+	M=M+1
+	@R0
+	M=M+1
+	@R3
+	M=M+1
+	D=M
+	@32
+	D=D-A
+	@DRAW
+	D;JLT
+@R3
+M=0
+@24546
+D=A
+@R0
+D=M-D
+@DRAW
+D;JLT
+@LOOP
+0;JMP
+(CLEAR)
+	@0
+	D=A
+	@R0
+	A=M
+	M=D
+	@R0
+	M=M+1
+	@R3
+	M=M+1
+	D=M
+	@32
+	D=D-A
+	@CLEAR
+	D;JLT
+@R3
+M=0
+@24546
+D=A
+@R0
+D=M-D
+@CLEAR
+D;JLT
+@LOOP
+0;JMP

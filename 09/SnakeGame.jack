@@ -1,0 +1,92 @@
+class SnakeGame{
+    field Snake snake; // pointer to the tail block of the snake
+    field Snake hsnake; // pointer to the head block of the snake
+    field Snake newsnake;// temp 
+    field int a; //the x coordinate to add to the head to get the x coordinate for the new snake
+    field int b; //same as above
+    
+    //places a snake in the game
+    constructor SnakeGame new(){
+        let snake = Snake.new(0,0,null);
+        let hsnake = snake;
+        return this;
+    }
+
+    method void run (){
+        var char key;  // the key currently pressed by the user
+        var boolean exit;
+        var int direction;
+        let exit = false;
+        let direction = 4;
+
+        while (~exit) {
+            // waits for a key to be pressed
+            while (key = 0) {
+               let key = Keyboard.keyPressed();
+               do progressSnake(direction);
+            }
+            if (key = 81)  { let exit = true; }// q was pressed
+            if (key = 88)  { do longer();}// x was pressed
+            if (key = 90)  { do shorter();}// z was pressed
+            if (key = 131) { let direction = 1;}// up
+            if (key = 133) { let direction = 4;}// down
+            if (key = 130) { let direction = 2;}// left
+            if (key = 132) { let direction = 3;}// right
+
+            while (~(key = 0)) {
+               let key = Keyboard.keyPressed();
+               do progressSnake(direction);
+            }
+        }
+        return;
+    }
+
+    //adds a new head to the snake
+    method void longer(){
+        var int newheadx;
+        var int newheady;
+        let newheadx = hsnake.getheadx()+a;
+        let newheady = hsnake.getheady()+b;
+        if (((newheadx+10)<511)&((newheady+10)<255)&(newheadx>-1)&(newheady>-1)){
+            let newsnake = Snake.new(newheadx,newheady,null);
+            do hsnake.setrem(newsnake);
+            let hsnake = newsnake;
+        }
+        return;
+
+    }
+
+    //removes the tail if possible 
+    method void shorter(){
+        if (~(snake.getrem()=null)){
+            let snake = snake.removecurr();
+        }
+        return;
+    }
+
+    method void progressSnake(int direction){
+        var int newheadx;
+        var int newheady;
+        if (direction=1){ let b = 0-10;let a = 0;}
+        if (direction=4){ let b = 0+10;let a = 0;}
+        if (direction=2){ let a = 0-10;let b = 0;}
+        if (direction=3){ let a = 0+10;let b = 0;}
+        let newheadx = hsnake.getheadx() + a;
+        let newheady = hsnake.getheady() + b;
+
+        if (((newheadx+10)<511)&((newheady+10)<255)&(newheadx>-1)&(newheady>-1)){
+            let newsnake = Snake.new(newheadx,newheady,null);
+            do hsnake.setrem(newsnake);
+            let hsnake = newsnake;
+            let snake = snake.removecurr();
+            do Sys.wait(100);
+        }
+        return;
+    }
+
+    method void dispose(){
+        do snake.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}
